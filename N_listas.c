@@ -13,9 +13,28 @@ typedef struct LinkedList {
     Node* head;
 } LinkedList;
 
-// Protótipos das funções auxiliares
-void insert(LinkedList* list, int value);
-void free_list(LinkedList* list);
+// Implementação da função para inserir um novo nó no início da lista
+void insert(LinkedList* list, int value) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    if (newNode == NULL) {
+        // Em um programa real, um tratamento de erro mais robusto seria necessário
+        return; 
+    }
+    newNode->data = value;
+    newNode->next = list->head;
+    list->head = newNode;
+}
+
+// Implementação da função para liberar a memória de uma lista
+void free_list(LinkedList* list) {
+    Node* current = list->head;
+    while (current != NULL) {
+        Node* temp = current;
+        current = current->next;
+        free(temp);
+    }
+    list->head = NULL;
+}
 
 int main() {
     const int N_INSERTIONS = 100000;
@@ -87,25 +106,3 @@ int main() {
     return 0;
 }
 
-// Implementação da função para inserir um novo nó no início da lista
-void insert(LinkedList* list, int value) {
-    Node* newNode = (Node*)malloc(sizeof(Node));
-    if (newNode == NULL) {
-        // Em um programa real, um tratamento de erro mais robusto seria necessário
-        return; 
-    }
-    newNode->data = value;
-    newNode->next = list->head;
-    list->head = newNode;
-}
-
-// Implementação da função para liberar a memória de uma lista
-void free_list(LinkedList* list) {
-    Node* current = list->head;
-    while (current != NULL) {
-        Node* temp = current;
-        current = current->next;
-        free(temp);
-    }
-    list->head = NULL;
-}
